@@ -1,3 +1,11 @@
 .accessable{
-    background-color: lightgreen;
+    background-color: var(--fieldAccessable);
+}
+
+.lightField{
+    background-color: var(--light);
+}
+
+.darkField{
+    background-color: var(--dark);
 }

@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+
+//Color Themes
+.coffee{
+    --controlls: yellow;
+
+    --lighter: #f2cc77;
+    --light: #c1823d;
+    --dark: rgb(105, 43, 27) ;
+    --darker: #6d5242;
+
+    --fieldAccessable: lightgreen;
+    --fieldInaccassable: red;
+}

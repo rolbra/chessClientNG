@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgClass } from '@angular/common';
+import { FieldInfo } from '../classes/fieldInfo';
 
 @Component({
   selector: 'app-field',
@@ -9,6 +10,14 @@ import { NgClass } from '@angular/common';
   styleUrl: './field.component.scss'
 })
 export class FieldComponent {
-  code: string = '&#x265F';
-  accessable: boolean = true;
+  @Input() code: string = '';
+  @Input() fieldInfo!: FieldInfo;
+  
+  constructor() {
+    this.fieldInfo = new FieldInfo('darkField');
+  }
+  
+  accessable: boolean = false;
+  colorType: string = 'darkField';
+  
 }
