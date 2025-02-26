@@ -12,7 +12,7 @@ import { FieldInfo } from '../classes/fieldInfo';
 })
 export class BoardComponent {
   public codeA8: string = '&#x265F';
-  public empty: string = '_';
+  public empty: string = '&#8192';
 
   public fields: FieldInfo[][] = [];
   
