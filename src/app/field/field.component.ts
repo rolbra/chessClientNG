@@ -14,10 +14,8 @@ export class FieldComponent {
   @Input() fieldInfo!: FieldInfo;
   
   constructor() {
-    this.fieldInfo = new FieldInfo('darkField');
   }
   
   accessable: boolean = false;
-  colorType: string = 'darkField';
   
 }
