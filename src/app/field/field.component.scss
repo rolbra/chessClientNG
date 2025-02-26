@@ -9,3 +9,14 @@
 .darkField{
     background-color: var(--dark);
 }
+
+div{
+    height: 75px;
+    width: 75px;
+    
+    font-size: 45px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
