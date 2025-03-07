@@ -1,5 +1,11 @@
-<div [ngClass]="this.themes[themeIndex]">
-  <p>chess client ng</p>
+<div id="divTitle" [ngClass]="this.themes[themeIndex]">
+  chess client NG
+</div>
+
+<div id="divControls" [ngClass]="this.themes[themeIndex]">
   <button (click)="switchTheme()">Theme</button>
+</div>
+
+<div id="divMain" [ngClass]="this.themes[themeIndex]">
   <app-board></app-board>
 </div>

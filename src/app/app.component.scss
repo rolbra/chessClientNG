@@ -1,0 +1,19 @@
+div{
+    background-color: var(--lighter);
+}
+
+#divTitle{
+    padding: 10px;
+}
+
+#divControls{
+    padding: 10px;
+}
+
+#divMain{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    height: 100lvh;
+    padding-top: 2%;
+}
