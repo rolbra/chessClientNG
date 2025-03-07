@@ -18,8 +18,6 @@ export class AppComponent {
   public themes: string[] = ['coffee', 'forest', 'neon', 'barbie', 'jewel'];
   public themeIndex: number = 0;
 
-  private positions!: Object;
-
   private positioner: PositionerService;
 
   constructor(positioner : PositionerService){
@@ -32,9 +30,12 @@ export class AppComponent {
 
   public setFigures() {
     this.positioner.getAllPositions().subscribe( respsonse => {
-      this.positions = respsonse;
-      console.log(this.positions);
-      //this.takeoverPositions(this.positions);
+      this.positioner.positions = respsonse;
+      this.positioner.updateFields();
     });
+  }
+
+  public test() {
+    this.positioner.updateFields();
   }
 }

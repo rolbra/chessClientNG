@@ -1,9 +1,4 @@
-class Figure{
-  name: string = '';
-  type: string = '';
-  color: string = '';
-  field: string = '';
-}
+import { Figure } from "./figure";
 
 export class FieldInfo{
   figure: Figure;
