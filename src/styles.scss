@@ -8,10 +8,12 @@ html, body{
 .coffee{
     --controlls: yellow;
 
-    --lighter: bisque;
+    --lighter: white;
     --light: #c1823d;
     --dark: #8a461e;
     --darker: #6d5242;
+
+    --background: bisque;
 
     --fieldAccessable: lightgreen;
     --fieldInaccassable: red;
@@ -19,10 +21,12 @@ html, body{
 .forest{
     --controlls: #f0d497;
 
-    --lighter: wheat;
-    --light: cadetblue;
-    --dark: darkslategrey;
+    --lighter: rgb(245, 228, 196);
+    --light: rgb(158, 221, 168);
+    --dark: rgb(87, 182, 150);
     --darker: #6d5242;
+
+    --background: rgb(232, 255, 242);
 
     --fieldAccessable: gold;
     --fieldInaccassable: red;
@@ -30,13 +34,60 @@ html, body{
 .neon{
     --controlls: #f0d497;
 
-    --lighter: rgb(255, 159, 34);
-    --light: rgb(45, 248, 255);
-    --dark: rgb(192, 54, 0);
+    --lighter: rgb(43, 43, 43);;
+    --light: #0aeaf1;
+    --dark: #fc15ef;
     --darker: #00109c;
 
+    --background: rgb(66, 66, 66);
+    
     --fieldAccessable: gold;
     --fieldInaccassable: red;
 
-    --animationtime: 60s;
+    --animationtime: 40s;
+}
+.ice{
+    --controlls: #f0d497;
+
+    --lighter: white;
+    --light: wheat;
+    --dark: lightgrey;
+    --darker: grey;
+
+    --background: bisque;
+    
+    --fieldAccessable: gold;
+    --fieldInaccassable: red;
+
+    --animationtime: 0s;
+}
+.barbie{
+    --controlls: #f0d497;
+
+    --lighter: pink;
+    --light: rgb(240, 145, 211);
+    --dark: rgb(253, 89, 212);
+    --darker: grey;
+
+    --background: rgb(255, 171, 213);
+    
+    --fieldAccessable: gold;
+    --fieldInaccassable: red;
+
+    --animationtime: 0s;
+}
+.jewel{
+    --controlls: #f0d497;
+
+    --lighter: green;
+    --light: rgb(255, 255, 77) ;
+    --dark:rgb(255, 76, 76);
+    --darker: grey;
+
+    --background: rgb(232, 255, 255);
+    
+    --fieldAccessable: gold;
+    --fieldInaccassable: red;
+
+    --animationtime: 0s;
 }

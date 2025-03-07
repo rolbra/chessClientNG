@@ -1,5 +1,16 @@
+@keyframes backgroundAnimation {
+    0%  {background-color: #3227a7; box-shadow: 0 0 20px 6px #3227a7;}
+    30% {background-color: #3227a7; box-shadow: 0 0 20px 6px #3227a7;}
+    50% {background-color: #fdeb27;box-shadow: 0 0 20px 6px #fdeb27;}
+    80% {background-color: #fdeb27;box-shadow: 0 0 20px 6px #fdeb27;}
+    100% {background-color: #3227a7; box-shadow: 0 0 20px 6px #3227a7;}
+}
+
 .background{
-    background-color: var(--light);
+    background-color: var(--lighter);
+    animation-name: backgroundAnimation;
+    animation-duration: var(--animationtime);
+    animation-iteration-count: infinite;
 }
 
 table{
@@ -8,10 +19,8 @@ table{
     height: 100%;
 }
 
-
 .square{
     border: 1px solid black;
-    background-color: azure;
     width: 80vw;
     height: 80vw;
     max-width: 80vh;

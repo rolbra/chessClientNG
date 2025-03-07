@@ -15,7 +15,7 @@ export class AppComponent {
   
   title = 'chessClientNG';
   
-  public themes: string[] = ['coffee', 'forest', 'neon', 'barbie', 'jewel'];
+  public themes: string[] = ['coffee', 'forest', 'neon', 'ice', 'barbie', 'jewel'];
   public themeIndex: number = 0;
 
   private positioner: PositionerService;
