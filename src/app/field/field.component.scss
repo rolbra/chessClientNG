@@ -15,12 +15,16 @@
     box-shadow: inset 0px 0px 5px 1px var(--lighter)
 }
 
-div{
+td {
+    width: 10%;
+    height: 10%;
+}
+
+div {
     height: 100%;
     width: 100%;
-    
-    font-size: 3vh;
-    
+    font-size: x-large;
+
     display: flex;
     justify-content: center;
     align-items: center;

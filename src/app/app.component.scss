@@ -2,6 +2,11 @@ div{
     background-color: var(--background);
 }
 
+#divBackground {
+    height: 100lvh;
+    background-color: var(--background);
+}
+
 #divTitle{
     padding: 10px;
 }
@@ -14,7 +19,6 @@ div{
     display: flex;
     justify-content: center;
     align-items: baseline;
-    height: 100lvh;
     padding-top: 2%;
 }
 
