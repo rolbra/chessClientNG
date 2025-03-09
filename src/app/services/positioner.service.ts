@@ -14,6 +14,9 @@ export class PositionerService {
 
   public positions!: Object;
 
+  public sourceField: any = null;
+  public destinationField: any = null;
+
   public fields: FieldInfo[][] = [];
 
   private readonly httpClient = inject(HttpClient);

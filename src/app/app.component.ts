@@ -18,6 +18,8 @@ export class AppComponent {
   public themes: string[] = ['coffee', 'forest', 'neon', 'ice', 'barbie', 'jewel'];
   public themeIndex: number = 0;
 
+  private reply: any;
+
   private positioner: PositionerService;
 
   constructor(positioner : PositionerService){
@@ -35,7 +37,27 @@ export class AppComponent {
     });
   }
 
-  public test() {
-    this.positioner.updateFields();
+  public move() {
+    this.positioner.move(this.positioner.sourceField.parentElement.id, this.positioner.destinationField.parentElement.id).subscribe( respsonse => {
+      this.reply = respsonse;
+      console.log(this.reply);
+    });
+
+    this.positioner.sourceField.classList.remove('selectedField');
+    this.positioner.sourceField = null;
+    this.positioner.destinationField.classList.remove('selectedField');;
+    this.positioner.destinationField = null;
+    
+    this.setFigures();
+  }
+
+  public resetGame(){
+    console.warn('game reset');
+    this.positioner.resetGame().subscribe( respsonse => {
+      this.reply = respsonse;
+      console.log(this.reply);
+    });
+
+    this.setFigures();
   }
 }
