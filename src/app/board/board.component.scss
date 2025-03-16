@@ -19,9 +19,14 @@ table{
     height: 100%;
 }
 
+th {
+    cursor: pointer;
+}
+
 td {
     width: 11%;
     height: 11%;
+    cursor: pointer;
 }
 
 .square{
