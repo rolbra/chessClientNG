@@ -19,12 +19,12 @@ table{
     height: 100%;
 }
 
+td {
+    width: 11%;
+    height: 11%;
+}
+
 .square{
-    border: 1px solid black;
-    width: 95vw;
-    height: 95vw;
-    max-width: 95vh;
-    max-height: 95vh;
-    min-width: 300px;
-    min-height: 300px;
+    width: 100%;
+    height: 100%;
 }

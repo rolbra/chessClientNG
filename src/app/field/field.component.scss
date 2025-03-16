@@ -23,9 +23,15 @@ td {
 div {
     height: 100%;
     width: 100%;
-    font-size: x-large;
+    font-size: 42px;
 
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+@media (max-width: 800px) {
+    div {
+        font-size: x-large;
+    }
 }

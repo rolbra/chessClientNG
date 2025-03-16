@@ -11,10 +11,6 @@ div{
     padding: 10px;
 }
 
-#divControls{
-    padding: 10px;
-}
-
 #divMain{
     display: flex;
     justify-content: center;
@@ -24,4 +20,67 @@ div{
 
 button{
     margin: 5px;
+}
+
+.flexContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#divBoardContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 60vw;
+    height: 60vw;
+    max-width: 80vh;
+    max-height: 80vh;
+}
+
+#divBoard {
+    border: 2px solid black;
+    text-align: center;
+    width: 100%;
+}
+
+#divCtrl {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.btnControl {
+    margin: 20px;
+}
+
+@media (max-width: 800px) {
+    .flexContainer {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #divBoardContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100vw;
+        height: 100vw;
+        max-width: 420px;
+        max-height: 420px;
+    }
+
+    #divBoard {
+        border: 2px solid black;
+        text-align: center;
+        width:90%;
+        max-width: 400px;
+        max-height: 400px;
+    }
+
+    .btnControl {
+        height: 50px;
+        width: 75px;
+    }
 }

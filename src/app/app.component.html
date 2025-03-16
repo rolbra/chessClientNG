@@ -1,16 +1,33 @@
 <div id="divBackground" [ngClass]="this.themes[themeIndex]">
-  <div id="divTitle" [ngClass]="this.themes[themeIndex]">
-    chess client NG
-  </div>
   
-  <div id="divControls" [ngClass]="this.themes[themeIndex]">
-    <button id="btnStart" (click)="setFigures()">&#10148;</button>
-    <button (click)="move()">move</button>
-    <button id="resetGame" (click)="resetGame()">Reset Game</button>
-    <button (click)="switchTheme()">Theme</button>
+  <div id="divTitle">
+    <h2>Chess Client NG</h2>
   </div>
-  
-  <div id="divMain" [ngClass]="this.themes[themeIndex]">
-    <app-board></app-board>
+
+  <div class="flexContainer">
+
+    <div id="divPlayer">
+      <p>Player 1</p>
+      <p>time: x min y sec</p>
+    </div>
+
+    <div id="divBoardContainer">
+      <div id="divBoard">
+        <app-board></app-board>
+      </div>
+    </div>
+
+    <div id="divPlayer">
+      <p>Player 2</p>
+      <p>time: x min y sec</p>
+    </div>
+
+  </div>
+
+  <div id="divCtrl" [ngClass]="this.themes[themeIndex]">
+    <button class="btnControl" id="btnStart" (click)="setFigures()">&#10148;</button>
+    <button class="btnControl" (click)="move()">move</button>
+    <button class="btnControl" id="resetGame" (click)="resetGame()">Reset Game</button>
+    <button class="btnControl" (click)="switchTheme()">Theme</button>
   </div>
 </div>
