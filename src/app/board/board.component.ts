@@ -22,7 +22,7 @@ export class BoardComponent {
     if( !event.target.parentElement.id ){
       return;
     }
-    console.log( 'board clicked: ', event.target.id);
+    console.log( 'board clicked: ', event.target.parentElement.id);
 
     if( this.positioner.sourceField == null ){
       this.positioner.sourceField = event.target;
