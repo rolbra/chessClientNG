@@ -50,7 +50,7 @@ export class BoardComponent {
     //is there a figure?
     let field = this.positioner.fields[coordinate.x][coordinate.y];
     if( field.figure.name != "" ){
-      console.log( "Here is a " + field.figure.name + " standing" );
+      console.log( "Here is a " + field.figure.color + " " + field.figure.type + " standing" );
     }
     else {
       console.log( "field " + coordinate.x + coordinate.y + " is empty" );

@@ -117,7 +117,12 @@ export class PositionerService {
 
     for(let i = 0; i < rows; i++) {
       for(let j = 0; j < cols; j++) {
+        this.fields[i][j].figure.name = '';
+        this.fields[i][j].figure.type = '';
+        this.fields[i][j].figure.color = '';
         this.fields[i][j].figure.code = this.empty;
+        this.fields[i][j].figure.x = -1;
+        this.fields[i][j].figure.y = -1;
       }
     }
   }
