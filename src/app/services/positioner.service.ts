@@ -3,6 +3,8 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FieldInfo } from '../classes/fieldInfo';
 import { Figure } from '../classes/figure';
+import { Player } from '../classes/player';
+import { GameInfo } from '../classes/gameInfo';
 
 
 enum Directions {
@@ -31,6 +33,10 @@ export class PositionerService {
 
   public positions!: Object;
 
+  public player0: Player;
+  public player1: Player;
+  public activePlayer: Player;
+
   public sourceField: any = null;
   public destinationField: any = null;
 
@@ -41,6 +47,10 @@ export class PositionerService {
   constructor(){
     let rows = 8;
     let cols = 8;
+
+    this.player0 = new Player;
+    this.player1 = new Player;
+    this.activePlayer = new Player;
 
     //init 2d-array and set field as dark field or light field
     for(let i = 0; i < rows; i++) {
@@ -88,13 +98,21 @@ export class PositionerService {
   public updateFields() {
     this.clearFields();
 
-    let positionString = JSON.stringify(this.positions);
-    console.log(positionString);
+    let transferData = JSON.stringify(this.positions);
+    console.log(transferData);
 
-    const parsedStr = JSON.parse(positionString) as Figure[];
+    type parsedType = {
+      gameInfo: GameInfo,
+      playerBlack: Player,
+      playerWhite: Player,
+      activePlayer: Player,
+      figures: Figure[]
+    }
+
+    const parsedStr = JSON.parse(transferData) as parsedType;
 
     try{
-      parsedStr.forEach(figure => {
+      parsedStr.figures.forEach(figure => {
         if(figure.x < 0 || figure.x > 7 || figure.y < 0 || figure.y > 7){
           console.log(figure.name + ' is out of range');
         }
@@ -105,6 +123,15 @@ export class PositionerService {
           this.fields[figure.x][figure.y].figure = figure;
         }
       });
+
+      this.player0.id = parsedStr.playerWhite.id;
+      this.player0.name = parsedStr.playerWhite.name;
+
+      this.player1.id = parsedStr.playerBlack.id;
+      this.player1.name = parsedStr.playerBlack.name;
+
+      this.activePlayer.id = parsedStr.activePlayer.id;
+      this.activePlayer.name = parsedStr.activePlayer.name;
     }
     catch(error){
       console.warn("unexpected response from server for 'positions'");

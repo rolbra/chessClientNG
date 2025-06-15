@@ -14,6 +14,9 @@ import { NgClass } from '@angular/common';
 export class AppComponent {
   
   title = 'chessClientNG';
+
+  player0: string = 'player 0';
+  player1: string = 'player 1';
   
   public themes: string[] = ['coffee', 'forest', 'neon', 'ice', 'barbie', 'jewel'];
   public themeIndex: number = 0;
@@ -34,6 +37,9 @@ export class AppComponent {
     this.positioner.getAllPositions().subscribe( respsonse => {
       this.positioner.positions = respsonse;
       this.positioner.updateFields();
+      this.player0 = this.positioner.player0.name;
+      this.player1 = this.positioner.player1.name;
+      
     });
   }
 
@@ -51,9 +57,9 @@ export class AppComponent {
     this.setFigures();
   }
 
-  public resetGame(){
+  public async resetGame(){
     console.warn('game reset');
-    this.positioner.resetGame().subscribe( respsonse => {
+    await this.positioner.resetGame().subscribe( respsonse => {
       this.reply = respsonse;
       console.log(this.reply);
     });
