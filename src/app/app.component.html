@@ -6,7 +6,7 @@
 
   <div class="flexContainer">
 
-    <div id="divPlayer">
+    <div id="divPlayer" [ngClass]="{activePlayer : this.activePlayer == this.player0}">
       <p>{{player0}}</p>
       <p>time: x min y sec</p>
     </div>
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div id="divPlayer">
+    <div id="divPlayer" [ngClass]="{activePlayer : this.activePlayer == this.player1}">
       <p>{{player1}}</p>
       <p>time: x min y sec</p>
     </div>

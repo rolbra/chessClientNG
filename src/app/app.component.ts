@@ -17,6 +17,7 @@ export class AppComponent {
 
   player0: string = 'player 0';
   player1: string = 'player 1';
+  activePlayer: string = '';
   
   public themes: string[] = ['coffee', 'forest', 'neon', 'ice', 'barbie', 'jewel'];
   public themeIndex: number = 0;
@@ -39,6 +40,7 @@ export class AppComponent {
       this.positioner.updateFields();
       this.player0 = this.positioner.player0.name;
       this.player1 = this.positioner.player1.name;
+      this.activePlayer = this.positioner.activePlayer.name;
       
     });
   }

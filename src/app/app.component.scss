@@ -2,6 +2,11 @@ div{
     background-color: var(--background);
 }
 
+.activePlayer{
+    font-weight: bold;
+    font-size: 20px;
+}
+
 #divBackground {
     height: 100lvh;
     background-color: var(--background);
