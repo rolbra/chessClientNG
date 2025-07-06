@@ -5,23 +5,9 @@ import { FieldInfo } from '../classes/fieldInfo';
 import { Figure } from '../classes/figure';
 import { Player } from '../classes/player';
 import { GameInfo } from '../classes/gameInfo';
+import { Directions } from '../classes/directions';
+import { Position } from '../classes/position';
 
-
-enum Directions {
-  bottomLeft,
-  left,
-  topLeft,
-  top,
-  topRight,
-  right,
-  bottomRight,
-  bottom
-}
-
-class Position {
-  x : number = -1;
-  y : number = -1;
-}
 
 @Injectable({
   providedIn: 'root'
@@ -192,6 +178,29 @@ export class PositionerService {
     return pos;
   }
 
+  public positionToString( pos : Position) : string {
+    let x!: string;
+    if(pos.x === 0)
+      x = 'A';
+    if(pos.x === 1)
+      x = 'B';
+    if(pos.x === 2)
+      x = 'C';
+    if(pos.x === 3)
+      x = 'D';
+    if(pos.x === 4)
+      x = 'E';
+    if(pos.x === 5)
+      x = 'F';
+    if(pos.x === 6)
+      x = 'G';
+    if(pos.x === 7)
+      x = 'H';
+
+    let y: string = (pos.y + 1).toString();
+    return x+y;
+  }
+
   private getDestination( pos : Position, direction : Directions ) : any {
     let position = Object.assign({}, pos);
     switch (direction) {
@@ -228,24 +237,131 @@ export class PositionerService {
         return -1;
     }
 
-    if(position.x < 0 || position.y < 0){
+    if(position.x < 0 || position.x > 7 || position.y < 0 || position.y > 7){
       return null;
     }
 
     return position;
   }
 
-  public isAccessableField( srcPos : string, direction : Directions ) : boolean {
+  public isAccessableField( srcPos : string, direction : Directions ) : any {
     let pos = this.positionStringToPosition(srcPos);
 
-    let destinationPos0 = this.getDestination( pos, Directions.bottom );
-    let destinationPos1 = this.getDestination( pos, Directions.bottomLeft );
-    let destinationPos2 = this.getDestination( pos, Directions.left );
-    let destinationPos3 = this.getDestination( pos, Directions.topLeft );
-    let destinationPos4 = this.getDestination( pos, Directions.top );
-    let destinationPos5 = this.getDestination( pos, Directions.topRight );
-    let destinationPos6 = this.getDestination( pos, Directions.right );
-    let destinationPos7 = this.getDestination( pos, Directions.bottomRight );
-    return false;
+    //get destination field
+    let destinationPos = this.getDestination( pos, direction );
+    if(destinationPos == null)
+      return false;
+
+    //check if there is a figure
+    let destinationField = this.fields[destinationPos.x][destinationPos.y];
+
+    //no figure
+    if( destinationField.figure.name === '')
+      return this.positionToString(destinationPos);
+
+    //figure
+    let activePlayerColor = (this.activePlayer.id === this.player0.id) ? 'white' : 'black';
+    if(destinationField.figure.color == activePlayerColor)
+      return false;
+    
+    if(destinationField.figure.color != activePlayerColor)
+      return this.positionToString(destinationPos);
+  }
+
+  public isFieldPopulatedByCurrentPlayer( position: Position ) : boolean {
+    let activePlayerColor = (this.activePlayer.id === this.player0.id) ? 'white' : 'black';
+
+    let field = this.fields[position.x][position.y];
+    if(field.figure.color == activePlayerColor)
+      return true;
+    else
+      return false;
+  }
+
+  public fieldPopulatedByColor( position: Position ) : string {
+    return this.fields[position.x][position.y].figure.color;
+  }
+
+  public isFieldPopulated( position: Position ) : boolean {
+    //check if there is a figure
+    let destinationField = this.fields[position.x][position.y];
+
+    //no figure
+    if( destinationField.figure.name === '')
+      return false;
+    else
+      return true;
+  }
+
+  public resetAccessableFields() {
+    for( let i = 0; i < 8; i++ ) {
+      for( let j = 0; j < 8; j++) {
+        this.fields[i][j].accessable = false;
+      }
+    }
+  }
+
+  public getAccessableFields( id: string ) : FieldInfo[] | null {
+    let position = this.positionStringToPosition(id);  //todo: other name for positionStringToPosition()
+    
+    let field = this.fields[position.x][position.y];
+    if(field.figure.name == '') {
+      console.log('empty field')
+      return null;
+    }
+
+    //    figure belongs to current player?
+      //todo: must be easier to check if player is white or black
+    let activePlayerColor = (this.activePlayer.id === this.player0.id) ? 'white' : 'black';
+    if(field.figure.color != activePlayerColor){
+      console.log('TESTING: do not display accessable fields for enemy figures later');
+      //return null;
+    }
+
+    //    which type of figure is it?
+    //    try figure dependend pathes and mark accessable fields
+    let accessableFields: FieldInfo[] = [];
+    switch(field.figure.type) {
+      case 'bishop':
+        console.log('search accessable fields for bishop');
+
+        let srcFieldPos: Position = this.positionStringToPosition(id);
+
+        let directions: Directions[] = [
+          Directions.bottomLeft,
+          Directions.topLeft,
+          Directions.topRight,
+          Directions.bottomRight
+        ];
+        
+        let srcFieldColor: string = this.fields[srcFieldPos.x][srcFieldPos.y].figure.color;
+
+        for(let direction of directions) {
+          let currentFieldPos = Object.assign(Position, srcFieldPos);
+
+          while(this.getDestination(currentFieldPos, direction) != null) {
+            let destPos: Position = this.getDestination(currentFieldPos, direction);
+            
+            if(!this.isFieldPopulated(destPos)) {
+              this.fields[destPos.x][destPos.y].accessable = true;
+              accessableFields.push(this.fields[destPos.x][destPos.y]);
+              currentFieldPos = Object.assign(Position, destPos); //update field position for next loop
+            }
+            else if(this.fieldPopulatedByColor(destPos) != srcFieldColor) {
+              this.fields[destPos.x][destPos.y].accessable = true;
+              accessableFields.push(this.fields[destPos.x][destPos.y]);
+              break;
+            }
+            else if(this.fieldPopulatedByColor(destPos) == srcFieldColor) {
+              break;
+            }
+          }
+        }
+        break;
+      default:
+        console.log(field.figure.type + ' not implemented yet');
+    }
+
+    return accessableFields;
   }
 }

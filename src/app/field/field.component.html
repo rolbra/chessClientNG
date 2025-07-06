@@ -1,1 +1,5 @@
-<div [ngClass]="{'accessable': accessable}" [ngClass]="this.fieldInfo.colorType" [innerHTML]="this.code"></div>
+<div [ngClass]="{'darkField': this.fieldInfo.colorType == 'darkField',
+                 'lightField': this.fieldInfo.colorType == 'lightField',
+                 'accessable': this.fieldInfo.accessable}"
+    [innerHTML]="this.code">
+</div>

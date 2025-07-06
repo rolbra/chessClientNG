@@ -64,4 +64,13 @@ export class BoardComponent {
     //which kind of figure is it?
     this.positioner.isAccessableField(event.target.parentElement.id, 0);
   }
+
+  public onMouseOver(event: any) {
+    let id = event.target.parentElement.id;
+    
+    this.positioner.resetAccessableFields();
+    let accessableFields = this.positioner.getAccessableFields(id);
+    
+    //console.log(accessableFields);
+  }
 }

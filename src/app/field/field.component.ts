@@ -16,6 +16,5 @@ export class FieldComponent {
   constructor() {
   }
   
-  accessable: boolean = false;
   
 }
