@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FieldInfo } from '../classes/fieldInfo';
-import { Figure } from '../classes/figure';
+import { Bishop, Figure, Rook } from '../classes/figure';
 import { Player } from '../classes/player';
 import { GameInfo } from '../classes/gameInfo';
 import { Directions } from '../classes/directions';
@@ -106,7 +106,19 @@ export class PositionerService {
         //   console.log(figure.name + ' invalid position');
         // }
         else{
-          this.fields[figure.x][figure.y].figure = figure;
+          switch(figure.type) {
+            case 'bishop':
+              this.fields[figure.x][figure.y].figure = Object.assign(new Bishop(), figure);
+              console.log('bishop detected while parsing incomming JSON');
+              break;
+            case 'rook':
+              this.fields[figure.x][figure.y].figure = Object.assign(new Rook(), figure);
+              console.log('rook detected while parsing incomming JSON');
+              break;
+            default:
+              this.fields[figure.x][figure.y].figure = Object.assign(new Figure(), figure);
+              //console.error('undefined figure type detected while parsing incoming JSON');
+          }
         }
       });
 
@@ -302,10 +314,10 @@ export class PositionerService {
   }
 
   public getAccessableFields( id: string ) : FieldInfo[] | null {
-    let position = this.positionStringToPosition(id);  //todo: other name for positionStringToPosition()
+    let srcFieldPos: Position = this.positionStringToPosition(id);  //todo: other name for positionStringToPosition()
     
-    let field = this.fields[position.x][position.y];
-    if(field.figure.name == '') {
+    let srcField : FieldInfo = this.fields[srcFieldPos.x][srcFieldPos.y];
+    if(srcField.figure.name == '') {
       console.log('empty field')
       return null;
     }
@@ -313,7 +325,7 @@ export class PositionerService {
     //    figure belongs to current player?
       //todo: must be easier to check if player is white or black
     let activePlayerColor = (this.activePlayer.id === this.player0.id) ? 'white' : 'black';
-    if(field.figure.color != activePlayerColor){
+    if(srcField.figure.color != activePlayerColor){
       console.log('TESTING: do not display accessable fields for enemy figures later');
       //return null;
     }
@@ -321,22 +333,12 @@ export class PositionerService {
     //    which type of figure is it?
     //    try figure dependend pathes and mark accessable fields
     let accessableFields: FieldInfo[] = [];
-    switch(field.figure.type) {
+    switch(srcField.figure.type) {
       case 'bishop':
-        console.log('search accessable fields for bishop');
+      case 'rook':
+        console.log('search accessable fields for ' + srcField.figure.type);
 
-        let srcFieldPos: Position = this.positionStringToPosition(id);
-
-        let directions: Directions[] = [
-          Directions.bottomLeft,
-          Directions.topLeft,
-          Directions.topRight,
-          Directions.bottomRight
-        ];
-        
-        let srcFieldColor: string = this.fields[srcFieldPos.x][srcFieldPos.y].figure.color;
-
-        for(let direction of directions) {
+        for(let direction of srcField.figure.directions) {
           let currentFieldPos = Object.assign(Position, srcFieldPos);
 
           while(this.getDestination(currentFieldPos, direction) != null) {
@@ -347,19 +349,23 @@ export class PositionerService {
               accessableFields.push(this.fields[destPos.x][destPos.y]);
               currentFieldPos = Object.assign(Position, destPos); //update field position for next loop
             }
-            else if(this.fieldPopulatedByColor(destPos) != srcFieldColor) {
+            else if(this.fieldPopulatedByColor(destPos) != srcField.figure.color) {
               this.fields[destPos.x][destPos.y].accessable = true;
               accessableFields.push(this.fields[destPos.x][destPos.y]);
               break;
             }
-            else if(this.fieldPopulatedByColor(destPos) == srcFieldColor) {
+            else if(this.fieldPopulatedByColor(destPos) == srcField.figure.color) {
+              break;
+            }
+            else {
+              console.error('unexpected behavior in finding accessable fields for ' + srcField.figure.color + ' ' + srcField.figure.name);
               break;
             }
           }
         }
         break;
       default:
-        console.log(field.figure.type + ' not implemented yet');
+        console.log(srcField.figure.type + ' not implemented yet');
     }
 
     return accessableFields;
