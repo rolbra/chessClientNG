@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FieldInfo } from '../classes/fieldInfo';
-import { Bishop, Figure, Rook } from '../classes/figure';
+import { Bishop, Figure, Queen, Rook } from '../classes/figure';
 import { Player } from '../classes/player';
 import { GameInfo } from '../classes/gameInfo';
 import { Directions } from '../classes/directions';
@@ -107,13 +107,17 @@ export class PositionerService {
         // }
         else{
           switch(figure.type) {
+            case 'rook':
+              this.fields[figure.x][figure.y].figure = Object.assign(new Rook(), figure);
+              console.log('rook detected while parsing incomming JSON');
+              break;
             case 'bishop':
               this.fields[figure.x][figure.y].figure = Object.assign(new Bishop(), figure);
               console.log('bishop detected while parsing incomming JSON');
               break;
-            case 'rook':
-              this.fields[figure.x][figure.y].figure = Object.assign(new Rook(), figure);
-              console.log('rook detected while parsing incomming JSON');
+            case 'queen':
+              this.fields[figure.x][figure.y].figure = Object.assign(new Queen(), figure);
+              console.log('queen detected while parsing incomming JSON');
               break;
             default:
               this.fields[figure.x][figure.y].figure = Object.assign(new Figure(), figure);
@@ -336,6 +340,7 @@ export class PositionerService {
     switch(srcField.figure.type) {
       case 'bishop':
       case 'rook':
+      case 'queen':
         console.log('search accessable fields for ' + srcField.figure.type);
 
         for(let direction of srcField.figure.directions) {

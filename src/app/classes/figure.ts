@@ -19,7 +19,7 @@ export class Rook extends Figure {
             Directions.left,
             Directions.top,
             Directions.right
-        ]
+        ];
     }
 }
 
@@ -31,6 +31,22 @@ export class Bishop extends Figure {
             Directions.topLeft,
             Directions.topRight,
             Directions.bottomRight
-        ]
+        ];
+    }
+}
+
+export class Queen extends Figure {
+    constructor() {
+        super();
+        this.directions = [
+            Directions.bottomLeft,
+            Directions.left,
+            Directions.topLeft,
+            Directions.top,
+            Directions.topRight,
+            Directions.right,
+            Directions.bottomRight,
+            Directions.bottom
+        ];
     }
 }
