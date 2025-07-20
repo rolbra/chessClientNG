@@ -9,16 +9,33 @@ export class Figure{
     x: number = -1;
     y: number = -1;
     directions: Directions[] = [];
+    moveCount: number = 0;
 }
 
 export class Rook extends Figure {
     constructor() {
         super();
         this.directions = [
-            Directions.bottom,
+            Directions.down,
             Directions.left,
-            Directions.top,
+            Directions.up,
             Directions.right
+        ];
+    }
+}
+
+export class Knight extends Figure {
+    constructor() {
+        super();
+        this.directions = [
+            Directions.jumpDownLeft,
+            Directions.jumpLeftDown,
+            Directions.jumpLeftUp,
+            Directions.jumpUpLeft,
+            Directions.jumpUpRight,
+            Directions.jumpRightUp,
+            Directions.jumpRightDown,
+            Directions.jumpDownRight,
         ];
     }
 }
@@ -27,10 +44,10 @@ export class Bishop extends Figure {
     constructor() {
         super();
         this.directions = [
-            Directions.bottomLeft,
-            Directions.topLeft,
-            Directions.topRight,
-            Directions.bottomRight
+            Directions.downLeft,
+            Directions.upLeft,
+            Directions.upRight,
+            Directions.downRight
         ];
     }
 }
@@ -39,14 +56,40 @@ export class Queen extends Figure {
     constructor() {
         super();
         this.directions = [
-            Directions.bottomLeft,
+            Directions.downLeft,
             Directions.left,
-            Directions.topLeft,
-            Directions.top,
-            Directions.topRight,
+            Directions.upLeft,
+            Directions.up,
+            Directions.upRight,
             Directions.right,
-            Directions.bottomRight,
-            Directions.bottom
+            Directions.downRight,
+            Directions.down
+        ];
+    }
+}
+
+export class King extends Figure {
+    constructor() {
+        super();
+        this.directions = [
+            Directions.downLeft,
+            Directions.left,
+            Directions.upLeft,
+            Directions.up,
+            Directions.upRight,
+            Directions.right,
+            Directions.downRight,
+            Directions.down
+        ];
+    }
+}
+
+export class Pawn extends Figure {
+    constructor() {
+        super();
+        this.directions = [
+            Directions.upLeft,
+            Directions.upRight
         ];
     }
 }

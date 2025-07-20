@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FieldInfo } from '../classes/fieldInfo';
-import { Bishop, Figure, Queen, Rook } from '../classes/figure';
+import { Bishop, Figure, King, Knight, Pawn, Queen, Rook } from '../classes/figure';
 import { Player } from '../classes/player';
 import { GameInfo } from '../classes/gameInfo';
 import { Directions } from '../classes/directions';
@@ -111,6 +111,10 @@ export class PositionerService {
               this.fields[figure.x][figure.y].figure = Object.assign(new Rook(), figure);
               console.log('rook detected while parsing incomming JSON');
               break;
+            case 'knight':
+              this.fields[figure.x][figure.y].figure = Object.assign(new Knight(), figure);
+              console.log('knight detected while parsing incomming JSON');
+              break;
             case 'bishop':
               this.fields[figure.x][figure.y].figure = Object.assign(new Bishop(), figure);
               console.log('bishop detected while parsing incomming JSON');
@@ -118,6 +122,14 @@ export class PositionerService {
             case 'queen':
               this.fields[figure.x][figure.y].figure = Object.assign(new Queen(), figure);
               console.log('queen detected while parsing incomming JSON');
+              break;
+            case 'king':
+              this.fields[figure.x][figure.y].figure = Object.assign(new King(), figure);
+              console.log('king detected while parsing incomming JSON');
+              break;
+            case 'pawn':
+              this.fields[figure.x][figure.y].figure = Object.assign(new Pawn(), figure);
+              console.log('pawn detected while parsing incomming JSON');
               break;
             default:
               this.fields[figure.x][figure.y].figure = Object.assign(new Figure(), figure);
@@ -220,33 +232,65 @@ export class PositionerService {
   private getDestination( pos : Position, direction : Directions ) : any {
     let position = Object.assign({}, pos);
     switch (direction) {
-      case Directions.bottomLeft:
+      case Directions.downLeft:
         position.x--;
         position.y--;
         break;
       case Directions.left:
         position.x--;
         break;
-      case Directions.topLeft:
+      case Directions.upLeft:
         position.x--;
         position.y++;
         break;
-      case Directions.top:
+      case Directions.up:
         position.y++;
         break;
-      case Directions.topRight:
+      case Directions.upRight:
         position.x++;
         position.y++;
         break;
       case Directions.right:
         position.x++;
         break;
-      case Directions.bottomRight:
+      case Directions.downRight:
         position.x++;
         position.y--;
         break;
-      case Directions.bottom:
+      case Directions.down:
         position.y--;
+        break;
+      case Directions.jumpDownLeft:
+        position.x -= 1;
+        position.y -= 2;
+        break;
+      case Directions.jumpLeftDown:
+        position.x -= 2;
+        position.y -= 1;
+        break;
+      case Directions.jumpLeftUp:
+        position.x -= 2;
+        position.y += 1;
+        break;
+      case Directions.jumpUpLeft:
+        position.x -= 1;
+        position.y += 2;
+        break;
+      case Directions.jumpUpRight:
+        position.x += 1;
+        position.y += 2;
+        break;
+      case Directions.jumpRightUp:
+        position.x += 2;
+        position.y += 1;
+        break;
+      case Directions.jumpRightDown:
+        position.x += 2;
+        position.y -= 1;
+        break;
+      case Directions.jumpDownRight:
+        position.x += 1;
+        position.y -= 2;
         break;
       default:
         console.error("unmanaged direction");
@@ -341,6 +385,7 @@ export class PositionerService {
       case 'bishop':
       case 'rook':
       case 'queen':
+      case 'king':
         console.log('search accessable fields for ' + srcField.figure.type);
 
         for(let direction of srcField.figure.directions) {
@@ -366,9 +411,70 @@ export class PositionerService {
               console.error('unexpected behavior in finding accessable fields for ' + srcField.figure.color + ' ' + srcField.figure.name);
               break;
             }
+            if(srcField.figure.type == 'king')
+              break;
           }
         }
         break;
+      case 'pawn':
+      {
+        //check forwardLeft, forwardRight
+        let forwardLeft = (srcField.figure.color == 'black') ? Directions.downLeft : Directions.upLeft;
+        let forwardRight = (srcField.figure.color == 'black') ? Directions.downRight : Directions.upRight;
+        let directions: Directions[] = [forwardLeft, forwardRight];
+
+        let currentFieldPos = Object.assign(Position, srcFieldPos);
+        
+        for(let direction of directions) {
+          let destPos: Position = this.getDestination(currentFieldPos, direction);
+          if(destPos == null)
+            continue;
+
+          if(!this.isFieldPopulated(destPos) || this.fieldPopulatedByColor(destPos) == srcField.figure.color)
+            continue;
+
+          else {
+            this.fields[destPos.x][destPos.y].accessable = true;
+            accessableFields.push(this.fields[destPos.x][destPos.y]);
+          }
+        }
+        
+        //check top:
+        let allowedSteps = (srcField.figure.moveCount == 0) ? 2 : 1;
+        for(let i=0; i<allowedSteps; i++) {
+          let destPos: Position = this.getDestination(currentFieldPos, (srcField.figure.color == 'black') ? Directions.down : Directions.up);
+          if(destPos == null)
+              break;
+          
+          if(this.isFieldPopulated(destPos))
+            break;
+  
+          else {
+            this.fields[destPos.x][destPos.y].accessable = true;
+            accessableFields.push(this.fields[destPos.x][destPos.y]);
+
+            currentFieldPos = Object.assign(Position, destPos); //update field position for next loop
+          }
+        }
+
+        break;
+      }
+      case 'knight':
+      {  
+        let currentFieldPos = Object.assign(Position, srcFieldPos);
+        for(let direction of srcField.figure.directions) {
+          let destPos: Position = this.getDestination(currentFieldPos, direction);
+          
+          if(destPos == null)
+            continue;
+
+          if(!this.isFieldPopulated(destPos) || this.fieldPopulatedByColor(destPos) != srcField.figure.color) {
+            this.fields[destPos.x][destPos.y].accessable = true;
+            accessableFields.push(this.fields[destPos.x][destPos.y]);
+          }
+        }
+        break;
+      }
       default:
         console.log(srcField.figure.type + ' not implemented yet');
     }

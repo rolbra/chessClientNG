@@ -1,10 +1,18 @@
 export enum Directions {
-  bottomLeft,
+  downLeft,
   left,
-  topLeft,
-  top,
-  topRight,
+  upLeft,
+  up,
+  upRight,
   right,
-  bottomRight,
-  bottom
+  downRight,
+  down,
+  jumpDownLeft,
+  jumpLeftDown,
+  jumpLeftUp,
+  jumpUpLeft,
+  jumpUpRight,
+  jumpRightUp,
+  jumpRightDown,
+  jumpDownRight
 }
