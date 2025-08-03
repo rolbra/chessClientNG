@@ -13,6 +13,8 @@ export class BoardComponent {
 
   public positioner: PositionerService;
 
+  private reply: any;
+
   constructor(positioner: PositionerService){
     this.positioner = positioner;
   }
@@ -35,7 +37,7 @@ export class BoardComponent {
     }
     else if( this.positioner.destinationField == null ){
       this.positioner.destinationField = event.target;
-      event.target.classList.add('selectedField');
+      this.move();
     }
   }
 
@@ -77,5 +79,28 @@ export class BoardComponent {
     let accessableFields = this.positioner.getAccessableFields(id);
     
     //console.log(accessableFields);
+  }
+
+  public setFigures() {
+    this.positioner.getAllPositions().subscribe( respsonse => {
+      this.positioner.positions = respsonse;
+      this.positioner.updateFields();
+    });
+  }
+
+  public move() {
+    this.positioner.move(this.positioner.sourceField.parentElement.id, this.positioner.destinationField.parentElement.id).subscribe( respsonse => {
+      this.reply = respsonse;
+      console.log(this.reply);
+    });
+
+    this.positioner.sourceField.classList.remove('selectedField');
+    this.positioner.sourceField = null;
+    this.positioner.destinationField.classList.remove('selectedField');;
+    this.positioner.destinationField = null;
+    
+    this.positioner.resetAccessableFields();
+    
+    this.setFigures();
   }
 }

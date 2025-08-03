@@ -6,8 +6,8 @@
 
   <div class="flexContainer">
 
-    <div id="divPlayer" [ngClass]="{activePlayer : this.activePlayer == this.player0}">
-      <p>{{player0}}</p>
+    <div id="divPlayer" [ngClass]="{activePlayer : this.positioner.activePlayer.name == this.positioner.player0.name}">
+      <p>{{this.positioner.player0.name}}</p>
       <p>time: x min y sec</p>
     </div>
 
@@ -17,8 +17,8 @@
       </div>
     </div>
 
-    <div id="divPlayer" [ngClass]="{activePlayer : this.activePlayer == this.player1}">
-      <p>{{player1}}</p>
+    <div id="divPlayer" [ngClass]="{activePlayer : this.positioner.activePlayer.name == this.positioner.player1.name}">
+      <p>{{this.positioner.player1.name}}</p>
       <p>time: x min y sec</p>
     </div>
 
@@ -26,7 +26,6 @@
 
   <div id="divCtrl" [ngClass]="this.themes[themeIndex]">
     <button class="btnControl" id="btnStart" (click)="setFigures()">&#10148;</button>
-    <button class="btnControl" (click)="move()">move</button>
     <button class="btnControl" id="resetGame" (click)="resetGame()">Reset Game</button>
     <button class="btnControl" (click)="switchTheme()">Theme</button>
   </div>

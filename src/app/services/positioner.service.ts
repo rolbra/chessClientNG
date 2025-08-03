@@ -34,8 +34,8 @@ export class PositionerService {
     let rows = 8;
     let cols = 8;
 
-    this.player0 = new Player;
-    this.player1 = new Player;
+    this.player0 = new Player('Player 1');
+    this.player1 = new Player('Player 2');
     this.activePlayer = new Player;
 
     //init 2d-array and set field as dark field or light field
