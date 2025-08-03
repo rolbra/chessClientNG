@@ -8,12 +8,15 @@ html, body{
 .coffee{
     --controlls: yellow;
 
-    --lighter: white;
+    --lighter: rgba(255,255,255,0.65);
     --light: #c1823d;
     --dark: #8a461e;
     --darker: #6d5242;
 
-    --background: bisque;
+    --background: url(../images/coffee_background.JPG);
+
+    --lightField: url(../images/coffee_light_field.png);
+    --darkField: url(../images/coffee_dark_field.png);
 
     --fieldAccessable: lightgreen;
     --fieldInaccassable: red;
@@ -21,12 +24,15 @@ html, body{
 .forest{
     --controlls: #f0d497;
 
-    --lighter: rgb(245, 228, 196);
+    --lighter: rgba(255,255,255,0.65);
     --light: rgb(158, 221, 168);
     --dark: rgb(87, 182, 150);
     --darker: #6d5242;
 
-    --background: rgb(232, 255, 242);
+    --background: url(../images/forest_background.JPG);
+
+    --lightField: url(../images/forest_light_field.png);
+    --darkField: url(../images/forest_dark_field.png);
 
     --fieldAccessable: gold;
     --fieldInaccassable: red;

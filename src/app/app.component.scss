@@ -1,5 +1,9 @@
 div{
-    background-color: var(--background);
+    // background-color: var(--background);
+}
+
+#divPlayer {
+    background-color: rgba(255, 255, 255, 0.67);
 }
 
 .activePlayer{
@@ -9,7 +13,11 @@ div{
 
 #divBackground {
     height: 100lvh;
-    background-color: var(--background);
+    background-image: var(--background);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 0.5s ease-in-out;
 }
 
 #divTitle{

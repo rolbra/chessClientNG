@@ -19,7 +19,7 @@ export class AppComponent {
   player1: string = 'player 1';
   activePlayer: string = '';
   
-  public themes: string[] = ['coffee', 'forest', 'neon', 'ice', 'barbie', 'jewel'];
+  public themes: string[] = ['coffee', 'forest'];
   public themeIndex: number = 0;
 
   private reply: any;
