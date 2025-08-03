@@ -56,6 +56,8 @@ export class AppComponent {
     this.positioner.destinationField.classList.remove('selectedField');;
     this.positioner.destinationField = null;
     
+    this.positioner.resetAccessableFields();
+    
     this.setFigures();
   }
 

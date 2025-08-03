@@ -68,6 +68,11 @@ export class BoardComponent {
   public onMouseOver(event: any) {
     let id = event.target.parentElement.id;
     
+    //keep markers for accessable fields if the source field is already selected
+    if(this.positioner.sourceField != null) {
+      return;
+    }
+
     this.positioner.resetAccessableFields();
     let accessableFields = this.positioner.getAccessableFields(id);
     
