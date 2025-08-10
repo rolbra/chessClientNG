@@ -7,7 +7,9 @@ div{
 }
 
 .activePlayer{
-    filter: blur(1px);
+    border-style: solid;
+    border-color: rgb(255, 153, 0);
+    border-width: 5px;
 }
 
 #divBackground {
