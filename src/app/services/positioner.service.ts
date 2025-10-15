@@ -58,18 +58,18 @@ export class PositionerService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Access-Control-Allow-Origin', '*');
-    const body = {gameId:"A489-78D1"};
+    const body = {function:"getPositions"};
     
-    return this.httpClient.post('http://lx-roland:8080/api/positions', JSON.stringify(body), {headers});
+    return this.httpClient.post('http://lx-roland:8080/api/game', JSON.stringify(body), {headers});
   }
 
   move(moveFrom: string, moveTo: string):Observable<any>{
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Access-Control-Allow-Origin', '*');
-    const body = {from:moveFrom, to:moveTo};
+    const body = {function:"moveFigure", from:moveFrom, to:moveTo};
     
-    return this.httpClient.post('http://lx-roland:8080/api/moveFigure', JSON.stringify(body), {headers});
+    return this.httpClient.post('http://lx-roland:8080/api/game', JSON.stringify(body), {headers});
   }
 
   resetGame():Observable<any>{
