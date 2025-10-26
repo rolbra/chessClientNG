@@ -76,9 +76,9 @@ export class PositionerService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Access-Control-Allow-Origin', '*');
-      const body = {gameId:"A489-78D1"};
+      const body = {function:"resetGame"};
     
-    return this.httpClient.post('http://lx-roland:8080/api/resetGame', JSON.stringify(body), {headers});
+    return this.httpClient.post('http://lx-roland:8080/api/game', JSON.stringify(body), {headers});
   }
 
   public updateFields() {
