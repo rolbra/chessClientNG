@@ -37,13 +37,12 @@ export class AppComponent {
     });
   }
 
-  public async resetGame(){
+  public resetGame(){
     console.warn('game reset');
-    await this.positioner.resetGame().subscribe( respsonse => {
-      this.reply = respsonse;
-      console.log(this.reply);
-    });
+    this.positioner.resetGameWs();
+  }
 
-    this.setFigures();
+  public connect(){
+    this.positioner.connectWebSocket();
   }
 }
