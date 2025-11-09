@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { FieldInfo } from '../classes/fieldInfo';
 import { Bishop, Figure, King, Knight, Pawn, Queen, Rook } from '../classes/figure';
 import { Player } from '../classes/player';
@@ -23,12 +23,16 @@ export class PositionerService {
   public player1: Player;
   public activePlayer: Player;
 
+  public preselectedField: any = null;
   public sourceField: any = null;
   public destinationField: any = null;
 
   public fields: FieldInfo[][] = [];
 
   private readonly httpClient = inject(HttpClient);
+
+  public ws: any;
+  private wsTransferData: Subject<any> = new Subject();
 
   constructor(){
     let rows = 8;
@@ -54,13 +58,47 @@ export class PositionerService {
     }
   }
   
+  connectWebSocket(){
+    if(this.ws) {
+      console.warn('already connected');
+      return;
+    }
+    
+    this.ws = new WebSocket("ws://10.42.0.1:8080");
+
+    this.ws.onopen = (ev:any) => {
+      console.warn('connection established');
+      this.getAllPositionsWs();
+    }
+
+    this.ws.onclose = (ev:any) => {
+      console.warn('connection closed');
+    }
+
+    this.ws.onmessage = (ev:any) => {
+      console.warn('message received');
+      this.positions = JSON.parse(ev.data);
+      this.updateFields();
+    }
+
+    this.ws.onerror = (ev:any) => {
+      console.error('connection error');
+      console.log(ev);
+    }
+  }
+
   getAllPositions():Observable<any>{
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Access-Control-Allow-Origin', '*');
     const body = {function:"getPositions"};
     
-    return this.httpClient.post('http://lx-roland:8080/api/game', JSON.stringify(body), {headers});
+    return this.httpClient.post('http://192.168.100.142:8080/api/game', JSON.stringify(body), {headers});
+  }
+
+  getAllPositionsWs() {
+    let command: string = '{"function":"getPositions"}';
+    this.ws.send(command);
   }
 
   move(moveFrom: string, moveTo: string):Observable<any>{
@@ -72,6 +110,11 @@ export class PositionerService {
     return this.httpClient.post('http://lx-roland:8080/api/game', JSON.stringify(body), {headers});
   }
 
+  moveWs(moveFrom: string, moveTo: string) {
+    let command: string = '{"function":"moveFigure", "from":"' + moveFrom + '", "to":"' + moveTo + '"}';
+    this.ws.send(command);
+  }
+
   resetGame():Observable<any>{
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
@@ -79,6 +122,16 @@ export class PositionerService {
       const body = {function:"resetGame"};
     
     return this.httpClient.post('http://lx-roland:8080/api/game', JSON.stringify(body), {headers});
+  }
+
+  resetGameWs() {
+    if(!this.ws) {
+      console.warn('connection not established');
+      return;
+    }
+    
+    let command: string = '{"function":"resetGame"}';
+    this.ws.send(command);
   }
 
   public updateFields() {

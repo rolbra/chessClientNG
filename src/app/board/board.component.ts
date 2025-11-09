@@ -31,9 +31,23 @@ export class BoardComponent {
     }    
     console.log( 'board clicked: ', event.target.parentElement.id);
 
-    if( this.positioner.sourceField == null ){
-      this.positioner.sourceField = event.target;
-      event.target.classList.add('selectedField');
+    if( this.positioner.sourceField == null ) {
+      if( this.positioner.preselectedField == null ){
+        this.positioner.preselectedField = event.target;
+        event.target.classList.add('preselectedField');
+        this.onMouseOver(event);
+      }
+      else if( this.positioner.preselectedField != event.target ) {
+        this.positioner.preselectedField.classList.remove('preselectedField');
+        this.positioner.preselectedField = event.target;
+        this.positioner.preselectedField.classList.add('preselectedField');
+        this.onMouseOver(event);
+      }
+      else if( this.positioner.preselectedField == event.target ) {
+        this.positioner.sourceField = event.target;
+        this.positioner.sourceField.classList.remove('preselectedField');
+        this.positioner.sourceField.classList.add('selectedField');
+      }
     }
     else if( this.positioner.destinationField == null ){
       this.positioner.destinationField = event.target;
@@ -89,14 +103,15 @@ export class BoardComponent {
   }
 
   public move() {
-    this.positioner.move(this.positioner.sourceField.parentElement.id, this.positioner.destinationField.parentElement.id).subscribe( respsonse => {
-      this.reply = respsonse;
-      console.log(this.reply);
-    });
+    //this.positioner.move(this.positioner.sourceField.parentElement.id, this.positioner.destinationField.parentElement.id).subscribe( respsonse => {
+    //  this.reply = respsonse;
+    //  console.log(this.reply);
+    //});
+    this.positioner.moveWs(this.positioner.sourceField.parentElement.id, this.positioner.destinationField.parentElement.id);
 
     this.positioner.sourceField.classList.remove('selectedField');
     this.positioner.sourceField = null;
-    this.positioner.destinationField.classList.remove('selectedField');;
+    this.positioner.destinationField.classList.remove('selectedField');
     this.positioner.destinationField = null;
     
     this.positioner.resetAccessableFields();

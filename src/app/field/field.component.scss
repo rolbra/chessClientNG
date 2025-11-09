@@ -16,6 +16,11 @@
     box-shadow: inset 0em 0em 0.2em 0.1em rgb(255, 153, 0)
 }
 
+.preselectedField{
+    text-shadow:0px 0px 15px black;
+    box-shadow: inset 0px 0px 5px 3px black;
+}
+
 .selectedField{
     text-shadow:0px 0px 15px var(--lighter);
     box-shadow: inset 0px 0px 5px 3px var(--lighter);
