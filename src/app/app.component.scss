@@ -61,7 +61,16 @@ button{
 #divCtrl {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    align-items: center;
+}
+
+.qrCode {
+    margin: 0 10px;
+}
+
+.ctrlItem:nth-child(n+2) {
+    flex: 1; /* Allows the items to grow and take available space */
+    text-align: center; /* Centers the text within the item */
 }
 
 .btnControl {
@@ -73,6 +82,7 @@ button{
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        flex-wrap: nowrap;
     }
 
     #divBoardContainer {
@@ -95,6 +105,6 @@ button{
 
     .btnControl {
         height: 50px;
-        width: 75px;
+        width: 60px;
     }
 }
