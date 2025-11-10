@@ -14,11 +14,23 @@ export class BoardComponent {
   public positioner: PositionerService;
 
   private reply: any;
+  private accessableFields: string[] | null = [];
 
   constructor(positioner: PositionerService){
     this.positioner = positioner;
   }
 
+  private idInAccessableFields(id: string) :boolean {
+    if(!this.accessableFields)
+      return false;
+
+    for(let index = 0; index < this.accessableFields.length; index++){
+      if(this.accessableFields[index] == id)
+        return true;
+    }
+
+    return false;
+  }
 
   public clickField(event: any){
     if( !event.target.parentElement.id ){
@@ -28,30 +40,35 @@ export class BoardComponent {
     if( event.ctrlKey == true ){
       this.ctrlClickField(event);
       return;
-    }    
+    }
+
+    let clickedFieldPos = this.positioner.positionStringToPosition(event.target.parentElement.id);
     console.log( 'board clicked: ', event.target.parentElement.id);
 
-    if( this.positioner.sourceField == null ) {
-      if( this.positioner.preselectedField == null ){
-        this.positioner.preselectedField = event.target;
-        event.target.classList.add('preselectedField');
-        this.onMouseOver(event);
-      }
-      else if( this.positioner.preselectedField != event.target ) {
-        this.positioner.preselectedField.classList.remove('preselectedField');
-        this.positioner.preselectedField = event.target;
-        this.positioner.preselectedField.classList.add('preselectedField');
-        this.onMouseOver(event);
-      }
-      else if( this.positioner.preselectedField == event.target ) {
-        this.positioner.sourceField = event.target;
-        this.positioner.sourceField.classList.remove('preselectedField');
-        this.positioner.sourceField.classList.add('selectedField');
-      }
+    if(this.positioner.isFieldPopulatedByCurrentPlayer(clickedFieldPos) ) {
+      this.accessableFields = null;
+      this.positioner.resetAccessableFields();
+      this.positioner.sourceField = event.target;
+      this.accessableFields = this.positioner.getAccessableFields(this.positioner.sourceField.parentElement.id);
     }
-    else if( this.positioner.destinationField == null ){
-      this.positioner.destinationField = event.target;
-      this.move();
+    else {
+      if( !this.accessableFields || this.accessableFields.length == 0 ) {
+        console.log('no source selected.');
+        return;
+      }
+
+      let posString = event.target.parentElement.id;
+      if( this.idInAccessableFields(posString) == false ) {
+        console.log('click is not a valid destination');
+        return;
+      }
+      else {
+        console.log('click is a valid destination');
+        this.positioner.destinationField = event.target;
+        this.move();
+        this.positioner.resetAccessableFields();
+        this.accessableFields = null;
+      }
     }
   }
 

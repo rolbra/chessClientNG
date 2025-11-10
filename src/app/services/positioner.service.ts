@@ -64,7 +64,8 @@ export class PositionerService {
       return;
     }
     
-    this.ws = new WebSocket("ws://10.42.0.1:8080");
+    //this.ws = new WebSocket("ws://10.42.0.1:8080");
+    this.ws = new WebSocket("ws://192.168.100.142:8080");
 
     this.ws.onopen = (ev:any) => {
       console.warn('connection established');
@@ -414,7 +415,7 @@ export class PositionerService {
     }
   }
 
-  public getAccessableFields( id: string ) : FieldInfo[] | null {
+  public getAccessableFields( id: string ) : string[] | null {
     let srcFieldPos: Position = this.positionStringToPosition(id);  //todo: other name for positionStringToPosition()
     
     let srcField : FieldInfo = this.fields[srcFieldPos.x][srcFieldPos.y];
@@ -433,7 +434,7 @@ export class PositionerService {
 
     //    which type of figure is it?
     //    try figure dependend pathes and mark accessable fields
-    let accessableFields: FieldInfo[] = [];
+    let accessableFields: string[] = [];
     switch(srcField.figure.type) {
       case 'bishop':
       case 'rook':
@@ -449,12 +450,12 @@ export class PositionerService {
             
             if(!this.isFieldPopulated(destPos)) {
               this.fields[destPos.x][destPos.y].accessable = true;
-              accessableFields.push(this.fields[destPos.x][destPos.y]);
+              accessableFields.push(this.positionToString(destPos));
               currentFieldPos = Object.assign(Position, destPos); //update field position for next loop
             }
             else if(this.fieldPopulatedByColor(destPos) != srcField.figure.color) {
               this.fields[destPos.x][destPos.y].accessable = true;
-              accessableFields.push(this.fields[destPos.x][destPos.y]);
+              accessableFields.push(this.positionToString(destPos));
               break;
             }
             else if(this.fieldPopulatedByColor(destPos) == srcField.figure.color) {
@@ -488,7 +489,7 @@ export class PositionerService {
 
           else {
             this.fields[destPos.x][destPos.y].accessable = true;
-            accessableFields.push(this.fields[destPos.x][destPos.y]);
+            accessableFields.push(this.positionToString(destPos));
           }
         }
         
@@ -504,7 +505,7 @@ export class PositionerService {
   
           else {
             this.fields[destPos.x][destPos.y].accessable = true;
-            accessableFields.push(this.fields[destPos.x][destPos.y]);
+            accessableFields.push(this.positionToString(destPos));
 
             currentFieldPos = Object.assign(Position, destPos); //update field position for next loop
           }
@@ -523,7 +524,7 @@ export class PositionerService {
 
           if(!this.isFieldPopulated(destPos) || this.fieldPopulatedByColor(destPos) != srcField.figure.color) {
             this.fields[destPos.x][destPos.y].accessable = true;
-            accessableFields.push(this.fields[destPos.x][destPos.y]);
+            accessableFields.push(this.positionToString(destPos));
           }
         }
         break;
