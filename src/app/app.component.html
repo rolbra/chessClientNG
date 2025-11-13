@@ -6,7 +6,7 @@
 
   <div class="flexContainer">
 
-    <div id="divPlayer" [ngClass]="{activePlayer : this.positioner.activePlayer.name == this.positioner.player0.name}">
+    <div class="divPlayer" [ngClass]="{activePlayer : this.positioner.activePlayer.name == this.positioner.player0.name}">
       <p>{{this.positioner.player0.name}}</p>
       <p>time: x min y sec</p>
     </div>
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <div id="divPlayer" [ngClass]="{activePlayer : this.positioner.activePlayer.name == this.positioner.player1.name}">
+    <div class="divPlayer" [ngClass]="{activePlayer : this.positioner.activePlayer.name == this.positioner.player1.name}">
       <p>{{this.positioner.player1.name}}</p>
       <p>time: x min y sec</p>
     </div>
