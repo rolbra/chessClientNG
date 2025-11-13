@@ -27,6 +27,9 @@ export class PositionerService {
   public sourceField: any = null;
   public destinationField: any = null;
 
+  private lastSource: Position;
+  private lastDestination: Position;
+
   public fields: FieldInfo[][] = [];
 
   private readonly httpClient = inject(HttpClient);
@@ -41,6 +44,9 @@ export class PositionerService {
     this.player0 = new Player('Player 1');
     this.player1 = new Player('Player 2');
     this.activePlayer = new Player;
+
+    this.lastSource = new Position();
+    this.lastDestination = new Position();
 
     //init 2d-array and set field as dark field or light field
     for(let i = 0; i < rows; i++) {
@@ -60,7 +66,7 @@ export class PositionerService {
   
   connectWebSocket(){
     if(this.ws) {
-      console.warn('already connected');
+      console.log('already connected');
       return;
     }
     
@@ -68,7 +74,7 @@ export class PositionerService {
     this.ws = new WebSocket("ws://192.168.100.142:8080");
 
     this.ws.onopen = (ev:any) => {
-      console.warn('connection established');
+      console.log('connection established');
       this.getAllPositionsWs();
     }
 
@@ -77,7 +83,7 @@ export class PositionerService {
     }
 
     this.ws.onmessage = (ev:any) => {
-      console.warn('message received');
+      console.log('message received');
       this.positions = JSON.parse(ev.data);
       this.updateFields();
     }
@@ -88,41 +94,15 @@ export class PositionerService {
     }
   }
 
-  getAllPositions():Observable<any>{
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*');
-    const body = {function:"getPositions"};
-    
-    return this.httpClient.post('http://192.168.100.142:8080/api/game', JSON.stringify(body), {headers});
-  }
-
   getAllPositionsWs() {
     let command: string = '{"function":"getPositions"}';
     this.ws.send(command);
   }
 
-  move(moveFrom: string, moveTo: string):Observable<any>{
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*');
-    const body = {function:"moveFigure", from:moveFrom, to:moveTo};
-    
-    return this.httpClient.post('http://lx-roland:8080/api/game', JSON.stringify(body), {headers});
-  }
-
   moveWs(moveFrom: string, moveTo: string) {
     let command: string = '{"function":"moveFigure", "from":"' + moveFrom + '", "to":"' + moveTo + '"}';
+    console.log(command);
     this.ws.send(command);
-  }
-
-  resetGame():Observable<any>{
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Access-Control-Allow-Origin', '*');
-      const body = {function:"resetGame"};
-    
-    return this.httpClient.post('http://lx-roland:8080/api/game', JSON.stringify(body), {headers});
   }
 
   resetGameWs() {
@@ -139,14 +119,16 @@ export class PositionerService {
     this.clearFields();
 
     let transferData = JSON.stringify(this.positions);
-    console.log(transferData);
+    //console.log(transferData);
 
     type parsedType = {
       gameInfo: GameInfo,
       playerBlack: Player,
       playerWhite: Player,
       activePlayer: Player,
-      figures: Figure[]
+      figures: Figure[],
+      lastSource: Position,
+      lastDestination: Position
     }
 
     const parsedStr = JSON.parse(transferData) as parsedType;
@@ -154,7 +136,7 @@ export class PositionerService {
     try{
       parsedStr.figures.forEach(figure => {
         if(figure.x < 0 || figure.x > 7 || figure.y < 0 || figure.y > 7){
-          console.log(figure.name + ' is out of range');
+          
         }
         // else if(!figure.x || !figure.y){
         //   console.log(figure.name + ' invalid position');
@@ -163,31 +145,24 @@ export class PositionerService {
           switch(figure.type) {
             case 'rook':
               this.fields[figure.x][figure.y].figure = Object.assign(new Rook(), figure);
-              console.log('rook detected while parsing incomming JSON');
               break;
             case 'knight':
               this.fields[figure.x][figure.y].figure = Object.assign(new Knight(), figure);
-              console.log('knight detected while parsing incomming JSON');
               break;
             case 'bishop':
               this.fields[figure.x][figure.y].figure = Object.assign(new Bishop(), figure);
-              console.log('bishop detected while parsing incomming JSON');
               break;
             case 'queen':
               this.fields[figure.x][figure.y].figure = Object.assign(new Queen(), figure);
-              console.log('queen detected while parsing incomming JSON');
               break;
             case 'king':
               this.fields[figure.x][figure.y].figure = Object.assign(new King(), figure);
-              console.log('king detected while parsing incomming JSON');
               break;
             case 'pawn':
               this.fields[figure.x][figure.y].figure = Object.assign(new Pawn(), figure);
-              console.log('pawn detected while parsing incomming JSON');
               break;
             default:
               this.fields[figure.x][figure.y].figure = Object.assign(new Figure(), figure);
-              //console.error('undefined figure type detected while parsing incoming JSON');
           }
         }
       });
@@ -200,6 +175,14 @@ export class PositionerService {
 
       this.activePlayer.id = parsedStr.activePlayer.id;
       this.activePlayer.name = parsedStr.activePlayer.name;
+
+      this.lastSource.x = parsedStr.lastSource.x;
+      this.lastSource.y = parsedStr.lastSource.y;
+      this.lastDestination.x = parsedStr.lastDestination.x;
+      this.lastDestination.y = parsedStr.lastDestination.y;
+
+      this.fields[this.lastSource.x][this.lastSource.y].selected = true;
+      this.fields[this.lastDestination.x][this.lastDestination.y].selected = true;
     }
     catch(error){
       console.warn("unexpected response from server for 'positions'");
@@ -411,6 +394,14 @@ export class PositionerService {
     for( let i = 0; i < 8; i++ ) {
       for( let j = 0; j < 8; j++) {
         this.fields[i][j].accessable = false;
+      }
+    }
+  }
+
+  public resetSelectedFields() {
+    for( let i = 0; i < 8; i++ ) {
+      for( let j = 0; j < 8; j++) {
+        this.fields[i][j].selected = false;
       }
     }
   }

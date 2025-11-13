@@ -31,10 +31,7 @@ export class AppComponent {
   }
 
   public setFigures() {
-    this.positioner.getAllPositions().subscribe( respsonse => {
-      this.positioner.positions = respsonse;
-      this.positioner.updateFields();
-    });
+    this.positioner.getAllPositionsWs();
   }
 
   public resetGame(){

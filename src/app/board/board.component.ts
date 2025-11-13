@@ -49,6 +49,7 @@ export class BoardComponent {
       this.accessableFields = null;
       this.positioner.resetAccessableFields();
       this.positioner.sourceField = event.target;
+      this.positioner.fields[clickedFieldPos.x][clickedFieldPos.y].selected = true;
       this.accessableFields = this.positioner.getAccessableFields(this.positioner.sourceField.parentElement.id);
     }
     else {
@@ -65,6 +66,7 @@ export class BoardComponent {
       else {
         console.log('click is a valid destination');
         this.positioner.destinationField = event.target;
+        this.positioner.fields[clickedFieldPos.x][clickedFieldPos.y].selected = true;
         this.move();
         this.positioner.resetAccessableFields();
         this.accessableFields = null;
@@ -113,10 +115,7 @@ export class BoardComponent {
   }
 
   public setFigures() {
-    this.positioner.getAllPositions().subscribe( respsonse => {
-      this.positioner.positions = respsonse;
-      this.positioner.updateFields();
-    });
+    this.positioner.getAllPositionsWs();
   }
 
   public move() {
@@ -125,13 +124,12 @@ export class BoardComponent {
     //  console.log(this.reply);
     //});
     this.positioner.moveWs(this.positioner.sourceField.parentElement.id, this.positioner.destinationField.parentElement.id);
-
-    this.positioner.sourceField.classList.remove('selectedField');
+    
     this.positioner.sourceField = null;
-    this.positioner.destinationField.classList.remove('selectedField');
     this.positioner.destinationField = null;
     
     this.positioner.resetAccessableFields();
+    this.positioner.resetSelectedFields();
     
     this.setFigures();
   }

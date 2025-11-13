@@ -1,5 +1,6 @@
 <div [ngClass]="{'darkField': this.fieldInfo.colorType == 'darkField',
                  'lightField': this.fieldInfo.colorType == 'lightField',
-                 'accessable': this.fieldInfo.accessable}"
+                 'accessable': this.fieldInfo.accessable,
+                 'selectedField': this.fieldInfo.selected }"
     [innerHTML]="this.code">
 </div>
