@@ -168,11 +168,11 @@ export class PositionerService {
         }
       });
 
-      this.player0.id = parsedStr.playerWhite.id;
-      this.player0.name = parsedStr.playerWhite.name;
+      this.player0.id = parsedStr.playerBlack.id;
+      this.player0.name = parsedStr.playerBlack.name;
 
-      this.player1.id = parsedStr.playerBlack.id;
-      this.player1.name = parsedStr.playerBlack.name;
+      this.player1.id = parsedStr.playerWhite.id;
+      this.player1.name = parsedStr.playerWhite.name;
 
       this.activePlayer.id = parsedStr.activePlayer.id;
       this.activePlayer.name = parsedStr.activePlayer.name;
@@ -358,7 +358,7 @@ export class PositionerService {
       return this.positionToString(destinationPos);
 
     //figure
-    let activePlayerColor = (this.activePlayer.id === this.player0.id) ? 'white' : 'black';
+    let activePlayerColor = (this.activePlayer.id === this.player0.id) ? 'black' : 'white';
     if(destinationField.figure.color == activePlayerColor)
       return false;
     
@@ -367,7 +367,7 @@ export class PositionerService {
   }
 
   public isFieldPopulatedByCurrentPlayer( position: Position ) : boolean {
-    let activePlayerColor = (this.activePlayer.id === this.player0.id) ? 'white' : 'black';
+    let activePlayerColor = (this.activePlayer.id === this.player0.id) ? 'black' : 'white';
 
     let field = this.fields[position.x][position.y];
     if(field.figure.color == activePlayerColor)
@@ -418,7 +418,7 @@ export class PositionerService {
 
     //    figure belongs to current player?
       //todo: must be easier to check if player is white or black
-    let activePlayerColor = (this.activePlayer.id === this.player0.id) ? 'white' : 'black';
+    let activePlayerColor = (this.activePlayer.id === this.player0.id) ? 'black' : 'white';
     if(srcField.figure.color != activePlayerColor){
       console.log('TESTING: do not display accessable fields for enemy figures later');
       //return null;
