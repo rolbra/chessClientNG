@@ -48,6 +48,7 @@ export class BoardComponent {
     if(this.positioner.isFieldPopulatedByCurrentPlayer(clickedFieldPos) ) {
       this.accessableFields = null;
       this.positioner.resetAccessableFields();
+      this.positioner.resetSelectedFields();
       this.positioner.sourceField = event.target;
       this.positioner.fields[clickedFieldPos.x][clickedFieldPos.y].selected = true;
       this.accessableFields = this.positioner.getAccessableFields(this.positioner.sourceField.parentElement.id);
@@ -129,7 +130,6 @@ export class BoardComponent {
     this.positioner.destinationField = null;
     
     this.positioner.resetAccessableFields();
-    this.positioner.resetSelectedFields();
     
     this.setFigures();
   }

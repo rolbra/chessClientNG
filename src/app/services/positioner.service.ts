@@ -117,6 +117,7 @@ export class PositionerService {
 
   public updateFields() {
     this.clearFields();
+    this.resetSelectedFields();
 
     let transferData = JSON.stringify(this.positions);
     //console.log(transferData);
