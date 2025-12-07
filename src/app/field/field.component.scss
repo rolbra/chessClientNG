@@ -1,15 +1,9 @@
 .lightField{
-    background-image: var(--lightField);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-color: var(--lightField);
 }
 
 .darkField{
-    background-image: var(--darkField);
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
+    background-color: var(--darkField);
 }
 
 .selectedField{
@@ -24,11 +18,6 @@
 .preselectedField{
     text-shadow:0px 0px 15px black;
     box-shadow: inset 0px 0px 5px 3px black;
-}
-
-td {
-    width: 10%;
-    height: 10%;
 }
 
 div {
