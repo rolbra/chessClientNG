@@ -70,8 +70,7 @@ export class PositionerService {
       return;
     }
     
-    //this.ws = new WebSocket("ws://10.42.0.1:8080");
-    this.ws = new WebSocket("ws://192.168.100.142:8080");
+    this.ws = new WebSocket("ws://lx-roland:8080");
 
     this.ws.onopen = (ev:any) => {
       console.log('connection established');
