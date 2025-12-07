@@ -1,37 +1,3 @@
-<div id="divBackground" [ngClass]="this.themes[themeIndex]">
-  
-  <div id="divTitle">
-    <h2>Chess Client NG</h2>
-  </div>
-
-  <div class="flexContainer">
-
-    <div class="divPlayer" [ngClass]="{activePlayer : this.positioner.activePlayer.name == this.positioner.player0.name}">
-      <p>{{this.positioner.player0.name}}</p>
-      <p>time: x min y sec</p>
-    </div>
-
-    <div id="divBoardContainer">
-      <div id="divBoard">
-        <app-board></app-board>
-      </div>
-    </div>
-
-    <div class="divPlayer" [ngClass]="{activePlayer : this.positioner.activePlayer.name == this.positioner.player1.name}">
-      <p>{{this.positioner.player1.name}}</p>
-      <p>time: x min y sec</p>
-    </div>
-
-  </div>
-
-  <div id="divCtrl" [ngClass]="this.themes[themeIndex]">
-    <div class="ctrlItem qrCode">
-      <img src="./chessLxRolandConnection.png" width="80px" height="80px" alt="alternatetext">
-    </div>
-    <div class="ctrlItem">
-      <button class="btnControl" id="btnStart" (click)="connect()">&#10148;</button>
-      <button class="btnControl" id="resetGame" (click)="resetGame()">Reset Game</button>
-      <button class="btnControl" (click)="switchTheme()">Theme</button>
-    </div>
-  </div>
+<div mainFrame>
+  <app-game></app-game>
 </div>

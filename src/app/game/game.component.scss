@@ -1,0 +1,120 @@
+@keyframes backgroundAnimation {
+    0%  {background-color: #ffffffab;}
+    50% {background-color: #ffffffab;}
+    51% {background-color: #ff9900;}
+    100% {background-color: #ff9900;}
+}
+
+div{
+    // background-color: var(--background);
+}
+
+.divPlayer {
+    background-color: rgba(255, 255, 255, 0.67);
+}
+
+.activePlayer{
+    border-style: solid;
+    border-color: rgb(255, 153, 0);
+    border-width: 3px;
+    animation-name: backgroundAnimation;
+    animation-duration: 1s;
+    animation-iteration-count: 3;
+}
+
+#divBackground {
+    height: 100lvh;
+    background-image: var(--background);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image 0.5s ease-in-out;
+}
+
+#divTitle{
+    padding: 10px;
+}
+
+#divMain{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding-top: 2%;
+}
+
+button{
+    margin: 5px;
+}
+
+.flexContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#divBoardContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 60vw;
+    height: 60vw;
+    max-width: 80vh;
+    max-height: 80vh;
+}
+
+#divBoard {
+    border: 2px solid black;
+    text-align: center;
+    width: 100%;
+}
+
+#divCtrl {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.qrCode {
+    margin: 0 10px;
+}
+
+.ctrlItem:nth-child(n+2) {
+    flex: 1; /* Allows the items to grow and take available space */
+    text-align: center; /* Centers the text within the item */
+}
+
+.btnControl {
+    margin: 20px;
+}
+
+@media (max-width: 800px) {
+    .flexContainer {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+    }
+
+    #divBoardContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100vw;
+        height: 100vw;
+        max-width: 420px;
+        max-height: 420px;
+    }
+
+    #divBoard {
+        border: 2px solid black;
+        text-align: center;
+        width:90%;
+        max-width: 400px;
+        max-height: 400px;
+    }
+
+    .btnControl {
+        height: 50px;
+        width: 60px;
+    }
+}
