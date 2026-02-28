@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BoardComponent } from '../board/board.component';
 import { PositionerService } from '../services/positioner.service';
 import { NgClass } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -16,10 +17,28 @@ export class GameComponent {
 
   private reply: any;
 
+  username: string = '';
+  gameId: string = '';
+
   public positioner: PositionerService;
 
-  constructor(positioner : PositionerService){
+  constructor(positioner : PositionerService, private route: ActivatedRoute, private router: Router){
     this.positioner = positioner;
+  }
+
+  ngOnInit() {
+    this.route.queryParamMap.subscribe(params => {
+      this.username = params.get('username')?? '';
+      this.gameId = params.get('gameId')?? '';
+    });
+    console.log(this.username + ' is here');
+    this.positioner.connectWebSocket(this.gameId, this.username);
+  }
+
+  returnHome() {
+    this.positioner.leaveGame(this.gameId, this.username);
+    this.positioner.ws.close();
+    this.router.navigate(['']);
   }
 
   public switchTheme() {
@@ -27,7 +46,7 @@ export class GameComponent {
   }
 
   public setFigures() {
-    this.positioner.getAllPositionsWs();
+    this.positioner.getAllPositionsWs(this.gameId);
   }
 
   public resetGame(){
@@ -36,6 +55,8 @@ export class GameComponent {
   }
 
   public connect(){
-    this.positioner.connectWebSocket();
+  }
+
+  public disconnect() {
   }
 }

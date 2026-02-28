@@ -13,7 +13,7 @@
 
     <div id="divBoardContainer">
       <div id="divBoard">
-        <app-board></app-board>
+        <app-board [gameId]="this.gameId"></app-board>
       </div>
     </div>
 
@@ -32,6 +32,7 @@
       <button class="btnControl" id="btnStart" (click)="connect()">&#10148;</button>
       <button class="btnControl" id="resetGame" (click)="resetGame()">Reset Game</button>
       <button class="btnControl" (click)="switchTheme()">Theme</button>
+      <button class="btnControl" (click)="returnHome()">Home</button>
     </div>
   </div>
 </div>

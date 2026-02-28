@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FieldComponent } from '../field/field.component';
 import { PositionerService } from '../services/positioner.service';
 
@@ -10,6 +10,7 @@ import { PositionerService } from '../services/positioner.service';
   styleUrl: './board.component.scss'
 })
 export class BoardComponent {
+  @Input() gameId!: string;
 
   public positioner: PositionerService;
 
@@ -68,7 +69,7 @@ export class BoardComponent {
         console.log('click is a valid destination');
         this.positioner.destinationField = event.target;
         this.positioner.fields[clickedFieldPos.x][clickedFieldPos.y].selected = true;
-        this.move();
+        this.move(this.gameId);
         this.positioner.resetAccessableFields();
         this.accessableFields = null;
       }
@@ -116,15 +117,15 @@ export class BoardComponent {
   }
 
   public setFigures() {
-    this.positioner.getAllPositionsWs();
+    this.positioner.getAllPositionsWs(this.gameId);
   }
 
-  public move() {
+  public move(gameId: string) {
     //this.positioner.move(this.positioner.sourceField.parentElement.id, this.positioner.destinationField.parentElement.id).subscribe( respsonse => {
     //  this.reply = respsonse;
     //  console.log(this.reply);
     //});
-    this.positioner.moveWs(this.positioner.sourceField.parentElement.id, this.positioner.destinationField.parentElement.id);
+    this.positioner.moveWs(this.positioner.sourceField.parentElement.id, this.positioner.destinationField.parentElement.id, gameId);
     
     this.positioner.sourceField = null;
     this.positioner.destinationField = null;

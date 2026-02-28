@@ -1,0 +1,27 @@
+<div class="container">
+  <header class="head">Web Chess</header>
+  
+  <div class="content">
+    <label id="lblUsername">User Name</label>
+    <input type="text" [(ngModel)]="this.username">
+  </div>
+
+  <div>
+    <button id="btnNewGame" (click)="this.createNewGame()">New Game</button>
+    <input type="text" [value]="this.gameId" readonly="true" style="width: 260px;">
+  </div>
+  
+  <div>
+    <button id="joinGame" (click)="this.joinGame()">Join Game</button>
+    <input #inutGameId type="text" [(ngModel)]="this.gameId" style="width: 260px;">
+  </div>
+
+  <div>
+    <label>Open Games</label>
+    <ul>
+      <li><label>Pris vs Roli</label></li>
+      <li><label>Mauri vs Saulito</label></li>
+      <li><label>Benni waiting...</label></li>
+    </ul>
+  </div>
+</div>

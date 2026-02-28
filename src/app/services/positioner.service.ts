@@ -9,6 +9,11 @@ import { Directions } from '../classes/directions';
 import { Position } from '../classes/position';
 
 
+interface ApiResponse {
+  gameId: string;
+  status: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -34,7 +39,7 @@ export class PositionerService {
 
   private readonly httpClient = inject(HttpClient);
 
-  public ws: any;
+  public ws!: WebSocket;
   private wsTransferData: Subject<any> = new Subject();
 
   constructor(){
@@ -64,9 +69,14 @@ export class PositionerService {
     }
   }
   
-  connectWebSocket(){
-    if(this.ws) {
-      console.log('already connected');
+  createNewGame(playerName: string){
+    const payload = {function:'createGame', player:playerName};
+    return this.httpClient.post<ApiResponse>('http://lx-roland:8080/api/v1/games', payload);
+  }
+
+  connectWebSocket(gameId: string|null, userName: string){
+    if(this.ws && this.ws.readyState === this.ws.OPEN) {
+      console.log('websocket object already in connection state');
       return;
     }
     
@@ -74,7 +84,10 @@ export class PositionerService {
 
     this.ws.onopen = (ev:any) => {
       console.log('connection established');
-      this.getAllPositionsWs();
+      if(gameId) {
+        this.joinGame(gameId, userName);
+        this.getAllPositionsWs(gameId);
+      }
     }
 
     this.ws.onclose = (ev:any) => {
@@ -83,8 +96,12 @@ export class PositionerService {
 
     this.ws.onmessage = (ev:any) => {
       console.log('message received');
-      this.positions = JSON.parse(ev.data);
-      this.updateFields();
+      const data: string = ev.data;
+      const message: Object = JSON.parse(data);
+      if(message.hasOwnProperty('activePlayer')){
+        this.positions = message;
+        this.updateFields();
+      }
     }
 
     this.ws.onerror = (ev:any) => {
@@ -93,13 +110,25 @@ export class PositionerService {
     }
   }
 
-  getAllPositionsWs() {
-    let command: string = '{"function":"getPositions"}';
+  joinGame(gameId: string, userName: string): void {
+    let command: string = `{"function":"joinGame", "gameId":"${gameId}", "userName":"${userName}"}`;
     this.ws.send(command);
   }
 
-  moveWs(moveFrom: string, moveTo: string) {
-    let command: string = '{"function":"moveFigure", "from":"' + moveFrom + '", "to":"' + moveTo + '"}';
+  leaveGame(gameId: string, userName: string): void {
+    let command: string = `{"function":"leaveGame", "gameId":"${gameId}", "userName":"${userName}"}`;
+    this.ws.send(command);
+  }
+
+  getAllPositionsWs(gameId: string|null) {
+    let command: string = `{"function":"getPositions", "gameId":"${gameId}"}`;
+    console.log(command);
+    this.ws.send(command);
+  }
+
+  moveWs(moveFrom: string, moveTo: string, gameId: string) {
+    //let command: string = '{"function":"moveFigure", "from":"' + moveFrom + '", "to":"' + moveTo + '"}';
+    let command: string = `{"function":"moveFigure", "from":"${moveFrom}", "to":"${moveTo}", "gameId":"${gameId}"}`;
     console.log(command);
     this.ws.send(command);
   }
@@ -181,11 +210,15 @@ export class PositionerService {
       this.lastDestination.x = parsedStr.lastDestination.x;
       this.lastDestination.y = parsedStr.lastDestination.y;
 
-      this.fields[this.lastSource.x][this.lastSource.y].selected = true;
-      this.fields[this.lastDestination.x][this.lastDestination.y].selected = true;
+      if(this.lastSource.x != -1 || this.lastSource.y != -1 || this.lastDestination.x != -1 || this.lastDestination.y != -1) {
+
+        this.fields[this.lastSource.x][this.lastSource.y].selected = true;
+        this.fields[this.lastDestination.x][this.lastDestination.y].selected = true;
+      }
     }
     catch(error){
       console.warn("unexpected response from server for 'positions'");
+      console.error(error)
     }
   }
 
