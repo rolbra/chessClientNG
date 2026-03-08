@@ -69,6 +69,11 @@ export class PositionerService {
     }
   }
   
+  getGameList() {
+    const payload = {function:'gameIds'};
+    return this.httpClient.post<ApiResponse>('http://lx-roland:8080/api/v1/games', payload);
+  }
+
   createNewGame(playerName: string){
     const payload = {function:'createGame', player:playerName};
     return this.httpClient.post<ApiResponse>('http://lx-roland:8080/api/v1/games', payload);
@@ -85,6 +90,7 @@ export class PositionerService {
     this.ws.onopen = (ev:any) => {
       console.log('connection established');
       if(gameId) {
+        //todo: check if game exists before connect
         this.joinGame(gameId, userName);
         this.getAllPositionsWs(gameId);
       }

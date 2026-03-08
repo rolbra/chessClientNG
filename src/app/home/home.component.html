@@ -8,20 +8,16 @@
 
   <div>
     <button id="btnNewGame" (click)="this.createNewGame()">New Game</button>
-    <input type="text" [value]="this.gameId" readonly="true" style="width: 260px;">
-  </div>
-  
-  <div>
-    <button id="joinGame" (click)="this.joinGame()">Join Game</button>
-    <input #inutGameId type="text" [(ngModel)]="this.gameId" style="width: 260px;">
   </div>
 
   <div>
     <label>Open Games</label>
     <ul>
-      <li><label>Pris vs Roli</label></li>
-      <li><label>Mauri vs Saulito</label></li>
-      <li><label>Benni waiting...</label></li>
+      @for (id of gameIds; track $index) {
+        <li class="game" (click)="this.joinGame(id)">{{id}}</li>
+      } @empty {
+        <li>No Games yet</li>
+      }
     </ul>
   </div>
 </div>
