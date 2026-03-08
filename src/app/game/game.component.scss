@@ -9,6 +9,15 @@ div{
     // background-color: var(--background);
 }
 
+#backgroundSVG {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
 .divPlayer {
     background-color: rgba(255, 255, 255, 0.67);
 }
@@ -23,12 +32,7 @@ div{
 }
 
 #divBackground {
-    height: 100lvh;
-    background-image: var(--background);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    transition: background-image 0.5s ease-in-out;
+    height: 100%;
 }
 
 #divTitle{
@@ -70,14 +74,17 @@ button{
 
 #divCtrl {
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    justify-content: center;
 }
 
 .qrCode {
     margin: 0 10px;
 }
 
+.ctrlItem {
+    display: flex;
+    justify-content: center;
+}
 .ctrlItem:nth-child(n+2) {
     flex: 1; /* Allows the items to grow and take available space */
     text-align: center; /* Centers the text within the item */
