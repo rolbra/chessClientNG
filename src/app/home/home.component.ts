@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { PositionerService } from '../services/positioner.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { GameEntryComponent } from "../game-entry/game-entry.component";
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, GameEntryComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })

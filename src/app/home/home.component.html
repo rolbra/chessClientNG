@@ -29,17 +29,17 @@
     <div class="center">
     </div>
 
-  <div class="center">
+  <div class="center" style="background-color: rgba(255,255,255,0.5);">
     <label class="fontsize">Open Games</label>
   </div>
 
   <div class="center">
-    <ul>
+    <div class="gameList">
       @for (id of gameIds; track $index) {
-        <li class="game fontsize" (click)="this.joinGame(id)">{{id}}</li>
+        <app-game-entry class="game" [gameId]="id" (click)="this.joinGame(id)"></app-game-entry>
       } @empty {
         <li class="fontsize">No Games yet</li>
       }
-    </ul>
+    </div>
   </div>
 </div>
